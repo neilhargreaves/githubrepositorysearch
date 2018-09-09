@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1em;
+}
+
+.search-container {
+    margin-top: 5em;
+}
+
+.button-container {
+    margin-top: 1em;
+}
+
+.search-results-container {
+    align-items: flex-start;
+}
+
+.list-width-100 {
+    width: 100%;
+}

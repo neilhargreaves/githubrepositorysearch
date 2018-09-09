@@ -1,6 +1,10 @@
 import React, {Component, Fragment} from 'react';
+import qs from 'qs';
+
+import {repositorySearch} from './utils/github';
 
 import Loader from './Loader';
+import RepositoryInformation from "./RepositoryInformation";
 
 class SearchResult extends Component {
   constructor(props) {
@@ -8,29 +12,39 @@ class SearchResult extends Component {
 
     this.state = {
       isLoading: true,
-      gitHubRepoData: []
+      gitHubRepoData: {},
+      error: ''
     };
   }
 
   componentDidMount() {
-    // getUserRepos('neilhargreaves')
-    //   .then(data => {
-    //     if (data.error)
-    //       return;
-    //
-    //     this.setState({
-    //       isLoading: false,
-    //       gitHubRepoData: data
-    //     });
-    //   });
-  }
+    if (!this.props.location.search) {
+      this.setState({
+        isLoading: false,
+        error: 'No Search Parameter Provided'
+      });
 
-  componentDidUpdate() {
+      return;
+    }
 
-  }
+    const searchParams = qs.parse(this.props.location.search.replace('?', ''));
 
-  componentWillUnmount() {
+    repositorySearch(searchParams.searchterm)
+      .then(data => {
+        if (data.error) {
+          this.setState({
+            isLoading: false,
+            error: data.error
+          });
 
+          return;
+        }
+
+        this.setState({
+          isLoading: false,
+          gitHubRepoData: data
+        });
+      });
   }
 
   render() {
@@ -42,9 +56,18 @@ class SearchResult extends Component {
             Search Results
           </div>
         </h4>
-        <Loader isLoading={this.state.isLoading}>
-          <div>Hello world</div>
-        </Loader>
+        <div>
+          <Loader isLoading={this.state.isLoading}>
+            {this.state.error && <div>{this.state.error}</div>}
+            {this.state.gitHubRepoData &&
+            <div>
+              <p>Results: {this.state.gitHubRepoData.hits}</p>
+              <RepositoryInformation repos={this.state.gitHubRepoData.items}/>
+
+            </div>
+            }
+          </Loader>
+        </div>
       </Fragment>
     )
   }

@@ -3,6 +3,9 @@ import {Route, Switch} from 'react-router';
 
 import Search from './Search';
 import SearchResult from './SearchResult';
+import RepositoryDetail from "./RepositoryDetail";
+
+import './css/App.css';
 
 class App extends Component {
   render() {
@@ -10,28 +13,27 @@ class App extends Component {
       <Fragment>
         <header>
           <h2 className='ui header'>
-            <img src='https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png' className='ui image'/>
+            <img
+              src='https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png'
+              className='ui image'
+              alt='GitHub Logo'
+            />
             <div className='content'>GitHub Repository Search</div>
           </h2>
         </header>
         <div className='ui pointing menu'>
-          <a className='item'>
-            Home
+          <a href='/search' className='item'>
+            Search
           </a>
-          <div className='right menu'>
-            <div className='item'>
-              <div className='ui transparent icon input'>
-                <input type='text' placeholder='Search...'/>
-                <i className='search link icon'></i>
-              </div>
-            </div>
-          </div>
         </div>
-        <Switch>
-          <Route exact path='/' component={Search}/>
-          <Route exact path='/search' component={Search}/>
-          <Route path='/searchresult' component={SearchResult}/>
-        </Switch>
+        <div className='container'>
+          <Switch>
+            <Route exact path='/' component={Search}/>
+            <Route exact path='/search' component={Search}/>
+            <Route path='/searchresult' component={SearchResult}/>
+            <Route path='/repositorydetail' component={RepositoryDetail}/>
+          </Switch>
+        </div>
       </Fragment>
     );
   }
