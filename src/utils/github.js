@@ -12,8 +12,6 @@ const repositorySearch = (searchTerm, language) => {
     `?q=${searchTermValue}${languageValue}`;
   const url = `${host}search/repositories${query}`;
 
-  console.log(url);
-
   return fetch(url)
     .then(response => {
       if (response.ok) {
@@ -26,11 +24,9 @@ const repositorySearch = (searchTerm, language) => {
       if (data.error)
         return data;
 
-      console.log(data);
-
       return {
         'hits': data.total_count,
-        'items': mapSearchItems(data.items)
+        'items': data.items.map(item => mapRepository(item))
       };
     })
     .catch(error => {
@@ -39,8 +35,6 @@ const repositorySearch = (searchTerm, language) => {
 };
 
 const getRepositoryDetail = (repository) => {
-  console.log(repository);
-
   return fetch(repository)
     .then(response => {
       if (response.ok) {
@@ -50,12 +44,10 @@ const getRepositoryDetail = (repository) => {
       return {'error': response}
     })
     .then(data => {
-      console.log(data);
-
       if (data.error)
         return data;
 
-      return data;
+      return mapRepository(data);
     })
     .catch(error => {
       return {'error': error.message}
@@ -64,8 +56,6 @@ const getRepositoryDetail = (repository) => {
 
 const getRepositoryReadme = (repository) => {
   const url = `${repository}/readme`;
-
-  console.log(url);
 
   return fetch(url)
     .then(response => {
@@ -79,15 +69,14 @@ const getRepositoryReadme = (repository) => {
       if (data.error)
         return data;
 
-      return data;
+      return mapReadme(data);
     })
     .catch(error => {
       return {'error': error.message}
     });
 };
 
-const mapSearchItems = (items) => {
-  return items.map(item => {
+const mapRepository = (item) => {
     return {
       'name': item.name,
       'fullName': item.full_name,
@@ -102,7 +91,6 @@ const mapSearchItems = (items) => {
       'creationDate': item.created_at,
       'updateDate': item.updated_at
     }
-  });
 };
 
 const mapRepositoryOwner = (owner) => {
@@ -111,6 +99,12 @@ const mapRepositoryOwner = (owner) => {
     'apiUrl': owner.url,
     'htmlUrl': owner.html_url
   };
+};
+
+const mapReadme = (readme) => {
+  return {
+    'readme': atob(readme.content)
+  }
 };
 
 module.exports = {

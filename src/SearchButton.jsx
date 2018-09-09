@@ -1,6 +1,5 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom'
-// this also works with react-router-native
 
 const SearchButton = withRouter(({history, searchTerm}) => (
   <button

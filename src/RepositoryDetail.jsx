@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import qs from 'qs';
+import Markdown from 'react-markdown';
+
 import {getRepositoryDetail, getRepositoryReadme} from './utils/github';
 import Loader from './Loader';
-import RepositoryInformation from "./RepositoryInformation";
+import RepositoryDetailedInformation from "./RepositoryDetailedInformation";
 
 class RepositoryDetail extends Component {
   constructor(props) {
@@ -52,7 +54,7 @@ class RepositoryDetail extends Component {
         }
 
         this.setState({
-          readme: data
+          readme: data.readme
         });
       });
   }
@@ -62,25 +64,14 @@ class RepositoryDetail extends Component {
       <Loader isLoading={this.state.isLoading}>
         {this.state.error && <div>{this.state.error}</div>}
         {this.state.gitHubRepoData &&
-        <div>
-          <h2>Header</h2>
-          <div className="ui labeled button">
-            <div className="ui basic blue button">
-              <i className="fork icon"></i> Forks
-            </div>
-            <p className="ui basic left pointing label">
-              forks
-            </p>
-          </div>
-          <div>
-            description
-          </div>
+        <div className="ui divided items">
+          <RepositoryDetailedInformation repo={this.state.gitHubRepoData}/>
         </div>
         }
-        {this.state.gitHubRepoData &&
+        {this.state.readme &&
         <div>
           <h2>Read Me</h2>
-          reeadme
+          <Markdown source={this.state.readme} />
         </div>
         }
       </Loader>

@@ -31,7 +31,7 @@ class Search extends Component {
           <i className="search icon"></i>
         </div>
         <div className="button-container">
-          <SearchButton searchTerm={this.state.searchTerm} />
+          <SearchButton searchTerm={this.state.searchTerm}/>
         </div>
       </Fragment>
     );
