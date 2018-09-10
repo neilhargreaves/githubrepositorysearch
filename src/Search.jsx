@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import SearchButton from "./SearchButton";
+import {withRouter} from "react-router";
 
 class Search extends Component {
   constructor(props) {
@@ -10,12 +11,21 @@ class Search extends Component {
     };
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleEnterKeypress = this.handleEnterKeypress.bind(this);
   }
 
   handleSearchChange = (e) => {
     this.setState({
       searchTerm: e.target.value
     });
+  };
+
+  handleEnterKeypress = (e) => {
+    if (e.keyCode === 13) {
+      const history = this.props.history;
+      const searchTerm = this.state.searchTerm;
+      history.push(`/searchresult?searchterm=${searchTerm}`)
+    }
   };
 
   render() {
@@ -27,6 +37,7 @@ class Search extends Component {
             placeholder="Search..."
             value={this.state.searchTerm}
             onChange={this.handleSearchChange}
+            onKeyUp={this.handleEnterKeypress}
           />
           <i className="search icon"></i>
         </div>
@@ -38,6 +49,6 @@ class Search extends Component {
   }
 }
 
-export default Search;
+export default withRouter(Search);
 
 
