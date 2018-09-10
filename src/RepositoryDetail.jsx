@@ -1,10 +1,11 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import qs from 'qs';
 import Markdown from 'react-markdown';
 
 import {getRepositoryDetail, getRepositoryReadme} from './utils/github';
 import Loader from './Loader';
 import RepositoryDetailedInformation from "./RepositoryDetailedInformation";
+import BackButton from "./BackButton";
 
 class RepositoryDetail extends Component {
   constructor(props) {
@@ -61,20 +62,23 @@ class RepositoryDetail extends Component {
 
   render() {
     return (
-      <Loader isLoading={this.state.isLoading}>
-        {this.state.error && <div>{this.state.error}</div>}
-        {this.state.gitHubRepoData &&
-        <div className="ui divided items">
-          <RepositoryDetailedInformation repo={this.state.gitHubRepoData}/>
-        </div>
-        }
-        {this.state.readme &&
-        <div>
-          <h2>Read Me</h2>
-          <Markdown source={this.state.readme} />
-        </div>
-        }
-      </Loader>
+      <Fragment>
+        <BackButton/>
+        <Loader isLoading={this.state.isLoading}>
+          {this.state.error && <div>{this.state.error}</div>}
+          {this.state.gitHubRepoData &&
+          <div className="ui divided items">
+            <RepositoryDetailedInformation repo={this.state.gitHubRepoData}/>
+          </div>
+          }
+          {this.state.readme &&
+          <div>
+            <h2>Read Me</h2>
+            <Markdown source={this.state.readme}/>
+          </div>
+          }
+        </Loader>
+      </Fragment>
     )
   }
 }

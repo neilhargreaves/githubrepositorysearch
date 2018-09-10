@@ -63,7 +63,6 @@ class SearchResult extends Component {
             <div>
               <p>Results: {this.state.gitHubRepoData.hits}</p>
               <RepositoryInformation repos={this.state.gitHubRepoData.items}/>
-
             </div>
             }
           </Loader>
